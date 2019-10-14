@@ -1,5 +1,5 @@
-const getForecast = async (address) => {
-    const response = await fetch(`/weather?address=${address}`)
+const getForecast = async (forecastType, address) => {
+    const response = await fetch(`/weather?address=${address}&forecast=${forecastType}`)
     const forecast = await response.json()
     
     if (forecast.error) 
@@ -15,6 +15,7 @@ const search = document.querySelector('input')
 const locationMessage = document.querySelector('#location-msg')
 const forecastMessage = document.querySelector('#forecast-msg')
 const errorMessage = document.querySelector('#error-msg')
+const dailyForecast = document.querySelector('#daily')
 
 weatherForm.addEventListener('submit', (e) => {
     e.preventDefault()
@@ -23,5 +24,8 @@ weatherForm.addEventListener('submit', (e) => {
     locationMessage.textContent = 'Loading...'
     forecastMessage.textContent = ''
 
-    getForecast(location)
+    if (dailyForecast.checked)
+        getForecast('daily', location)
+    else 
+        getForecast('weekly', location)
 })
